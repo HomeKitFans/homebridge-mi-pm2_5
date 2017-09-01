@@ -23,7 +23,7 @@ npm install -g miio homebridge-mi-pm2_5
     "showTimeSwitch": false,
     "ip": "192.168.88.xx",
     "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-}],
+}]
 ```
 ## Get token
 Open command prompt or terminal. Run following command:.
