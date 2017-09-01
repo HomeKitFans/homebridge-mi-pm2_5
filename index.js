@@ -109,8 +109,8 @@ MiPM2_5.prototype = {
             }.bind(this));
         services.push(pmService);
         
-        if(this.config['showTimeSwitch']) {
-            var switchService = new Service.Switch(this.config['name']);
+        if(!this.config['showTimeSwitchDisable']) {
+            var switchService = new Service.Switch(this.config['showTimeSwitchName']);
             switchService
                 .getCharacteristic(Characteristic.On)
                 .on('get', function(callback) {
