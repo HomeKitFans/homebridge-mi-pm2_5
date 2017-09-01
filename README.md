@@ -18,11 +18,11 @@ npm install -g miio homebridge-mi-pm2_5
 ## Configuration
 ```
 "accessories": [{
-	"accessory": "MiPM2_5",
-	"name": "AirQuality Sensor",
-	"showTimeSwitch": false,
-	"ip": "192.168.88.xx",
-	"token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    "accessory": "MiPM2_5",
+    "name": "AirQuality Sensor",
+    "showTimeSwitch": false,
+    "ip": "192.168.88.xx",
+    "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }],
 ```
 ## Get token
