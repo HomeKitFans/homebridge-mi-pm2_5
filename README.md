@@ -40,7 +40,7 @@ Token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx via auto-token
 Support: Unknown   
 ```
 "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" is token.   
-If token is "???", then reset device and connection device created Wi-Fi hotspot.   
+If token is "???", then reset device and connect device created Wi-Fi hotspot.   
 Run following command:   
 ```
 miio --discover --sync
