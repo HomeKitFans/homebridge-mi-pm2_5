@@ -27,7 +27,7 @@ npm install -g miio homebridge-mi-pm2_5
 }]
 ```
 ## Get token
-Open command prompt or terminal. Run following command:.
+Open command prompt or terminal. Run following command:
 ```
 miio --discover
 ```
@@ -39,8 +39,17 @@ Address: 192.168.88.xx
 Token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx via auto-token   
 Support: Unknown   
 ```
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx is token.
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" is token.   
+If token is "???", then reset device and connection device created Wi-Fi hotspot.   
+Run following command:   
+```
+miio --discover --sync
+```
+Wait until you get output.   
+For more information about token, please refer to [OpenMiHome](https://github.com/OpenMiHome/mihome-binary-protocol) and [miio](https://github.com/aholstenson/miio).   
 ## Version Logs
+### 0.0.2
+1.change air quality grade rules.   
 ### 0.0.1
 1.display XiaoMi PM2.5 sensor value.   
 2.switch on/off XiaoMi PM2.5 sensor time display.   

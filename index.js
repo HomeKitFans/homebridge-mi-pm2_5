@@ -90,11 +90,11 @@ MiPM2_5.prototype = {
                     
                     if(result[0] <= 50) {
                         callback(null, 1);
-                    } else if(result[0] > 50 && result[0] <= 75) {
+                    } else if(result[0] > 50 && result[0] <= 100) {
                         callback(null, 2);
-                    } else if(result[0] > 75 && result[0] <= 150) {
+                    } else if(result[0] > 100 && result[0] <= 200) {
                         callback(null, 3);
-                    } else if(result[0] > 150 && result[0] <= 300) {
+                    } else if(result[0] > 200 && result[0] <= 300) {
                         callback(null, 4);
                     } else if(result[0] > 300) {
                         callback(null, 5);
