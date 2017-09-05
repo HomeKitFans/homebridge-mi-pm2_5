@@ -67,44 +67,34 @@ MiPM2_5.prototype = {
             .setCharacteristic(Characteristic.Model, "PM2.5 Sensor")
             .setCharacteristic(Characteristic.SerialNumber, "Undefined");
         services.push(infoService);
-
-        var batteryService = new Service.BatteryService();
-        var batLowCharacteristic = batteryService.getCharacteristic(Characteristic.StatusLowBattery);
-        var batLevelCharacteristic = batteryService.getCharacteristic(Characteristic.BatteryLevel);
-        var batChargingStateCharacteristic = batteryService.getCharacteristic(Characteristic.ChargingState);
-        services.push(batteryService);
         
         var pmService = new Service.AirQualitySensor(this.config['name']);
         var pm2_5Characteristic = pmService.addCharacteristic(Characteristic.PM2_5Density);
         pmService
             .getCharacteristic(Characteristic.AirQuality)
             .on('get', function(callback) {
-                that.device.call("get_prop", ["aqi", "battery", "usb_state"]).then(result => {
+                that.device.call("get_prop", ["aqi"]).then(result => {
                     that.log.debug("[MiPM2_5][DEBUG]AirQualitySensor - AirQuality - getState: " + result);
-                    
-                    batLevelCharacteristic.updateValue(result[1]);
-                    batChargingStateCharacteristic.updateValue(result[2] === "on" ? 1: 0);
-                    batLowCharacteristic.updateValue(result[1] < 20 ? 1: 0);
                     
                     pm2_5Characteristic.updateValue(result[0]);
                     
                     if(result[0] <= 50) {
-                        callback(null, 1);
+                        callback(null, Characteristic.AirQuality.EXCELLENT);
                     } else if(result[0] > 50 && result[0] <= 100) {
-                        callback(null, 2);
+                        callback(null, Characteristic.AirQuality.GOOD);
                     } else if(result[0] > 100 && result[0] <= 200) {
-                        callback(null, 3);
+                        callback(null, Characteristic.AirQuality.FAIR);
                     } else if(result[0] > 200 && result[0] <= 300) {
-                        callback(null, 4);
+                        callback(null, Characteristic.AirQuality.INFERIOR);
                     } else if(result[0] > 300) {
-                        callback(null, 5);
+                        callback(null, Characteristic.AirQuality.POOR);
                     } else {
-                        callback(true);
+                        callback(null, Characteristic.AirQuality.UNKNOWN);
                     }
                     
                 }).catch(function(err) {
                     that.log.error("[MiPM2_5][ERROR]AirQualitySensor - AirQuality - getState Error: " + err);
-                    callback(true);
+                    callback(err);
                 });
             }.bind(this));
         services.push(pmService);
@@ -115,26 +105,57 @@ MiPM2_5.prototype = {
                 .getCharacteristic(Characteristic.On)
                 .on('get', function(callback) {
                     that.device.call("get_prop", ["time_state"]).then(result => {
-                        that.log.debug("[MiPM2_5][DEBUG]AirQualitySensor - AirQuality - timeSwitchState: " + result);
-                        callback(null, result[0] === 'on' ? 1 : 0);
+                        that.log.debug("[MiPM2_5][DEBUG]AirQualitySensor - Switch - getSwitchState: " + result);
+                        callback(null, result[0] === 'on' ? true : false);
                     }).catch(function(err) {
-                        that.log.error("[MiPM2_5][ERROR]AirQualitySensor - AirQuality - timeSwitchState Error: " + err);
-                        callback(true);
+                        that.log.error("[MiPM2_5][ERROR]AirQualitySensor - Switch - getSwitchState Error: " + err);
+                        callback(err);
                     });
                 }.bind(this))
                 .on('set', function(value, callback) {
-                    if(value) {
-                        that.device.call("set_time_state", ['on']);
-                    } else {
-                        that.device.call("set_time_state", ['off']);
-                    }
-                    callback(null);
+                    that.device.call("set_time_state", [value ? "on" : "off"]).then(result => {
+                        that.log.debug("[MiPM2_5][DEBUG]AirQualitySensor - Switch - setSwitchState Result: " + result);
+                        if(result[0] === "ok") {
+                            callback(null);
+                        } else {
+                            callback(result[0]);
+                        }
+                    }).catch(function(err) {
+                        that.log.error("[MiPM2_5][ERROR]AirQualitySensor - Switch - setSwitchState Error: " + err);
+                        callback(err);
+                    });
                 }.bind(this));
             services.push(switchService);
         }
 
+        var batteryService = new Service.BatteryService();
+        var batLowCharacteristic = batteryService.getCharacteristic(Characteristic.StatusLowBattery);
+        var batLevelCharacteristic = batteryService.getCharacteristic(Characteristic.BatteryLevel);
+        batLevelCharacteristic
+            .on('get', function(callback) {
+                that.device.call("get_prop", ["battery"]).then(result => {
+                    that.log.debug("[MiPM2_5][DEBUG]AirQualitySensor - Battery - getLevel: " + result);
+                    batLowCharacteristic.updateValue(result[0] < 20 ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                    callback(null, result[0]);
+                }).catch(function(err) {
+                    that.log.error("[MiPM2_5][ERROR]AirQualitySensor - Battery - getLevel Error: " + err);
+                    callback(err);
+                });
+            }.bind(this));
+        var batChargingStateCharacteristic = batteryService.getCharacteristic(Characteristic.ChargingState);
+        batChargingStateCharacteristic
+            .on('get', function(callback) {
+                that.device.call("get_prop", ["usb_state"]).then(result => {
+                    that.log.debug("[MiPM2_5][DEBUG]AirQualitySensor - Battery - getChargingState: " + result);
+                    callback(null, result[0] === "on" ? Characteristic.ChargingState.CHARGING : Characteristic.ChargingState.NOT_CHARGING);
+                }).catch(function(err) {
+                    that.log.error("[MiPM2_5][ERROR]AirQualitySensor - Battery - getChargingState Error: " + err);
+                    callback(err);
+                });
+            }.bind(this));
+        services.push(batteryService);
+    
         return services;
     }
 
 }
-
