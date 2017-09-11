@@ -118,7 +118,7 @@ MiPM2_5.prototype = {
                         if(result[0] === "ok") {
                             callback(null);
                         } else {
-                            callback(result[0]);
+                            callback(new Error(result[0]));
                         }
                     }).catch(function(err) {
                         that.log.error("[MiPM2_5][ERROR]AirQualitySensor - Switch - setSwitchState Error: " + err);

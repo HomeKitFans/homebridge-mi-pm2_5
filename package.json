@@ -1,6 +1,6 @@
 {
   "name": "homebridge-mi-pm2_5",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "XiaoMi PM2.5 sensor plugin for HomeBridge(https://github.com/nfarina/homebridge).",
   "keywords": [
     "homebridge-plugin"
