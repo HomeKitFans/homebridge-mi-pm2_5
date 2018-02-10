@@ -1,12 +1,15 @@
 {
   "name": "homebridge-mi-pm2_5",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "XiaoMi PM2.5 sensor plugin for HomeBridge(https://github.com/nfarina/homebridge).",
   "keywords": [
-    "homebridge-plugin"
+    "homebridge-plugin",
+    "xiaomi",
+    "mi",
+    "pm2.5"
   ],
   "author": "YinHang",
-  "license": "ISC",
+  "homepage": "https://github.com/YinHangCode/homebridge-mi-pm2_5",
   "repository": {
     "type": "git",
     "url": "https://github.com/YinHangCode/homebridge-mi-pm2_5"
@@ -15,7 +18,10 @@
     "url": "https://github.com/YinHangCode/homebridge-mi-pm2_5/issues"
   },
   "engines": {
-    "node": ">=0.12.0",
+    "node": ">=7.0.0",
     "homebridge": ">=0.4.1"
+  },
+  "dependencies": {
+    "miio": "0.14.1"
   }
 }
