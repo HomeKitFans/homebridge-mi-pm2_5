@@ -40,7 +40,7 @@ open website [[Get MiIo Tokens By DataBase File](http://miio2.yinhh.com/)], uplo
 ### Get token by network
 Open command prompt or terminal. Run following command:
 ```
-miio --discover
+miio discover
 ```
 Wait until you get output similar to this:
 ```
@@ -54,7 +54,7 @@ Support: Unknown
 If token is "???", then reset device and connect device created Wi-Fi hotspot.   
 Run following command:   
 ```
-miio --discover --sync
+miio discover --sync
 ```
 Wait until you get output.   
 For more information about token, please refer to [OpenMiHome](https://github.com/OpenMiHome/mihome-binary-protocol) and [miio](https://github.com/aholstenson/miio).   
